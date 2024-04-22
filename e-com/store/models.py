@@ -7,6 +7,9 @@ class Category(models.Model):
 
 	def  __str__(self):
 		return self.name
+	
+	class Meta:
+		verbose_name = 'Categories'  #change the class name to Categories
 
 
 
@@ -18,7 +21,7 @@ class Customer(models.Model):
 	email =  models.EmailField(max_length=15)
 	password = models.CharField(max_length=25)
 
-	def  full_name(self):
+	def  __str__(self):
 		return f"{self.first_name} {self.last_name}"
 
 
