@@ -1,0 +1,33 @@
+ 
+
+
+
+{% extends 'base.html '%}
+
+ {% block content %}
+
+<div class="container ">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header text-center text-dark">
+            <h3>Sign Up</h3>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br/>
+                  <button type="submit" class="btn btn-secondary">Sign up</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <br></br><br></br><br></br>
+ <br></br><br></br><br></br>
+ <br></br><br></br><br></br>
+ <br></br><br></br><br></br>
+ 
+  {% endblock %}
