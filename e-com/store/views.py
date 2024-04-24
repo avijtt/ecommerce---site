@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django import forms
@@ -69,8 +69,20 @@ def logout_user(request):
 
 def product(request,pk):
 	product = Product.objects.get(id = pk)
-	context ={
-	'product':product,
-	}
-	
+	context ={'product':product}
 	return render(request, 'store/product.html', context)
+
+
+def category_content(request,foo):
+	# replace space with hyphen
+	foo=foo.replace('-', ' ')
+	try:
+		# look for category
+		categories = Category.objects.get(name = foo)
+		products = Product.objects.filter(category  = categories)
+		context = {'categories' : categories, 'products' : products}
+		return render(request,'store/category.html', context) 
+	except:
+		messages.success(request,'Category does not exist!')
+		return redirect('home')
+	 
