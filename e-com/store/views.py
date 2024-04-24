@@ -65,3 +65,12 @@ def logout_user(request):
 	logout(request)
 	messages.success(request,(" You have been LoggedOut"))
 	return redirect('home')
+
+
+def product(request,pk):
+	product = Product.objects.get(id = pk)
+	context ={
+	'product':product,
+	}
+	
+	return render(request, 'store/product.html', context)
