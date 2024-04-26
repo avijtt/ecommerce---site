@@ -1,13 +1,13 @@
-class Cart():
-    def __init__(self,request):
+class Cart:
+    def __init__(self, request):
         self.session = request.session
 
         # get currenrt session key if exist
-        cart  = self.session.get('session_key')
+        cart = self.session.get("session_key")
 
         # for new user , no session key ; create one
-        if 'session_key' not in request.session:
-            cart = self.session['session_key'] = {}
+        if "session_key" not in request.session:
+            cart = self.session["session_key"] = {}
 
         # make sure cart is availiable to all pages
         self.cart = cart
