@@ -4,7 +4,7 @@
 
 
 <div class="container">
-     <br>
+    <br>
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
@@ -17,24 +17,25 @@
                         <p class="card-text">{{ product.description }} </p>
 
                         {% if product.is_sale %}
-                        
-                        <div class="d-flex justify-content-center small text-warning mb-2"> 
+
+                        <div class="d-flex justify-content-center small text-warning mb-2">
                             <div class="bi-star-fill"></div>
-                                &nbsp;Sale!!&nbsp;
-                           <div class="bi-star-fill"></div>
+                            &nbsp;Sale!!&nbsp;
+                            <div class="bi-star-fill"></div>
                         </div>
-                       
-                       <!-- Product price-->
-                     <strike>  ${{ product.price }}</strike>  - ${{ product.sale_price }}
-                        
-                     {% else %}
-                     
-                        {{ product.price }}
-                        
+
+                        <!-- Product price-->
+                        <strike> ${{ product.price }}</strike> - ${{ product.sale_price }}
+
+                        {% else %}
+
+                        ${{ product.price }}
+
                         {% endif %}
-                         <br><br>
+                        <br><br>
                         <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
-                        <button type="button" class="btn btn-primary" value="{{ product.id }}" id="add-cart">Add To Cart</button>
+                        <button type="button" class="btn btn-primary" value="{{ product.id }}" id="add-cart">Add To
+                            Cart</button>
                     </center>
 
                 </div>
@@ -47,22 +48,25 @@
 
 <script>
     // check if button is clicked
-    $(document).on('click', '#add-cart',function(e){
+    $(document).on('click', '#add-cart', function (e) {
         e.preventDefault();
         $.ajax({
-            type : 'POST',
-            url :'{% url "cart_add"  %}',
+            type: 'POST',
+            url: '{% url "cart_add"  %}',
             data: {
-                product_id : $('#add-cart').val(),
-                csrfmiddlewaretoken : '{{ csrf_token }}',
-                action : 'post'
-        },
-        success : function(json){
-            console.log(json)
-        },
-        error : function(xhr, errmsg, err){
+                product_id: $('#add-cart').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                 console.log(json) 
+                // take 'Qty from views.py to show value'
+                 document.getElementById("cart-quantity").textContent = json.Qty;
+                 alert("Product added to cart");
+            },
+            error: function (xhr, errmsg, err) {
 
-        }
+            }
         });
     })
 </script>

@@ -4,11 +4,9 @@ class Cart:
 
         # get currenrt session key if exist
         cart = self.session.get("session_key")
-
         # for new user , no session key ; create one
         if "session_key" not in request.session:
             cart = self.session["session_key"] = {}
-
         # make sure cart is availiable to all pages
         self.cart = cart
 
@@ -19,5 +17,7 @@ class Cart:
             pass
         else:
             self.cart[product_id]={'price' : str(product.price)}
-
         self.session.modified = True
+
+    def __len__(self):
+        return len(self.cart)

@@ -15,16 +15,18 @@ def cart_add(request):
     # test for post
     if request.POST.get('action') == 'post':
         # get product-id from jquery
-        product_id = int(request.POST.get('product_id'))
-        
+        product_id = int(request.POST.get('product_id'))     
         # lookup product
         product = get_object_or_404(Product, id = product_id)
-
         # save the session
         cart.add(product = product)
+        
+        # get cart Quantity
+        cart_quantity = cart.__len__()
 
-        # return response
-        response = JsonResponse({'product name': product.name})
+        # reurn response
+        # response = JsonResponse({'product name': product.name})
+        response = JsonResponse({' Qty': cart_quantity})
         return response
 
 def cart_delete(request):
