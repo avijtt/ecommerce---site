@@ -2,20 +2,21 @@
 
 {% block content %}
 
-  <!-- Header-->
-  <header class="bg-dark py-5">
-   <div class="container px-4 px-lg-5 my-5">
-       <div class="text-center text-white">
-           <h1 class="display-4 fw-bolder">Shopping Cart</h1>
-           <p class="lead fw-normal text-white-50 mb-0">View Your Shopping <List class=""></List></p>
-       </div>
-   </div>
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+            <p class="lead fw-normal text-white-50 mb-0">View Your Shopping <List class=""></List>
+            </p>
+        </div>
+    </div>
 </header>
 <br>
 
 <div class="container">
     {% if cart_products %}
-         {% for product in cart_products %}
+    {% for product in cart_products %}
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
@@ -35,14 +36,30 @@
                         </div>
                         <!-- Product price-->
                         <strike> ${{ product.price }}</strike> - ${{ product.sale_price }}
-                        
+
                         {% else %}
                         ${{ product.price }}
 
                         {% endif %}
                         <br><br>
+                        <div class="row justify-content-center">
+                            <div class="col-md-2">Quantity :</div>
+                            <div class="col-md-2">
+                                <select class="form-select form-select-sm">
+                                    {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                    <option selected>
+                                        {{ value}}
+                                    </option>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+                        <br><br>
                         <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
-                         
+
                     </center>
                 </div>
             </div>
@@ -52,11 +69,11 @@
     {% else %}
     <h2>There is nothing in cart</h2>
     <br><br><br><br><br>
-<br><br><br><br><br>
-<br><br><br><br><br>
-<br><br><br><br><br>
-{% endif %}
+    <br><br><br><br><br>
+    <br><br><br><br><br>
+    <br><br><br><br><br>
+    {% endif %}
 </div>
- 
 
- {% endblock %}
+
+{% endblock %}
