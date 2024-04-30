@@ -10,9 +10,11 @@ def cart_summery(request):
     cart = Cart(request)
     cart_products = cart.get_prods()
     quantities = cart.get_quants()
+    totals = cart.cart_totals() 
     context = {
         'cart_products':cart_products,
-        'quantities' : quantities
+        'quantities' : quantities,
+        'totals' : totals
     }
     return render(request, 'cart/cart_summery.html', context)
 
