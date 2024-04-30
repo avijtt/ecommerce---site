@@ -43,7 +43,6 @@ def register_user(request):
 		return render(request, 'register.html',context )
 
 
-
 def login_user(request):
 	if request.method == "POST":
 		username = request.POST['username']
@@ -85,4 +84,10 @@ def category_content(request,foo):
 	except:
 		messages.success(request,'Category does not exist!')
 		return redirect('home')
-	 
+
+def category_summary(request):
+	categories = Category.objects.all()
+	context = {
+		'categories': categories 
+	}
+	return render(request, 'store/category_summary.html', context)
