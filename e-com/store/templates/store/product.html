@@ -59,7 +59,7 @@
 <br><br><br><br><br><br><br>
 
 <script>
-    // check if button is clicked
+    // check if button is clicked add to cart
     $(document).on('click', '#add-cart', function (e) {
         e.preventDefault();
         $.ajax({
@@ -75,7 +75,7 @@
                 console.log(json)
                 // take 'Qty from views.py to show value'
                 document.getElementById("cart-quantity").textContent = json.Qty;
-                alert("Product added to cart");
+                location.reload()
             },
             error: function (xhr, errmsg, err) {
 
