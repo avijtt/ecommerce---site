@@ -1,49 +1,48 @@
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light stickey-bottom">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="{% url 'home' %}">Shop me</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link  " aria-current="page" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                              
-                        <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Category</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a href="{% url 'category_summary' %}" class="dropdown-item">All Products</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Cell-Phone' %}">Cell Phone</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Book' %}">Books</a></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'home' %}">Shop Me</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
 
-                        </ul>
-                    </li>
-                     
-                    
-                    {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url   'logout' %}">  Logout</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url  'update_user' %}">Update</a></li>
-
-                    {% else %}
-                    <li class="nav-item "><a class="nav-link" href="{% url 'register' %}">Sign up</a></li>
-                    <li class="nav-item "><a class="nav-link" href="{% url 'login' %}">Login</a></li>  
-                        {% endif %}
-    
-                     
-                </ul>
-                <form class="d-flex">
-                    <a href="{% url 'cart_summery' %}" class="btn btn-outline-dark">  <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-quantity">{{cart|length}}</span></a>                
-                </form>
-            </div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Cell-Phone' %}">Cell Phone</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Book' %}">Books</a></li>
+                    </ul>
+                </li>
+                
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Update</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'update_password' %}">Change Password</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Sign up</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+            
+            <form class="d-flex ms-auto">
+                <a href="{% url 'cart_summery' %}" class="btn btn-outline-dark">
+                    <i class="bi-cart-fill me-1"></i> Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-quantity">{{ cart|length }}</span>
+                </a>
+            </form>
         </div>
-    </nav>
+    </div>
+</nav>
