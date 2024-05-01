@@ -5,7 +5,7 @@ from django.contrib import messages
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from.forms import SignUpForm
+from.forms import SignUpForm,UpdateUserForm
 
 # Create your views here.
 def home(request):
@@ -65,6 +65,22 @@ def logout_user(request):
 	messages.success(request,(" You have been LoggedOut"))
 	return redirect('home')
 
+def update_user(request):
+	if request.user.is_authenticated:
+		current_user = User.objects.get(id = request.user.id)
+		user_form = UpdateUserForm(request.POST or None, instance = current_user )
+		context = {
+			'user_form':user_form
+		}
+		if user_form.is_valid():
+			user_form.save()
+			login(request, current_user)
+			messages.success(request, 'User has been updated')
+			return redirect('home')
+		return render(request, 'update_user.html', context)
+	else:
+		messages.success(request, ' You must been logged in to update')
+		return redirect('update_user')
 
 def product(request,pk):
 	product = Product.objects.get(id = pk)
