@@ -4,7 +4,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from.forms import SignUpForm,UpdateUserForm, ChangePasswordForm
 
 # Create your views here.
