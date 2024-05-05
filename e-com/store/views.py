@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product, Category
+from .models import Product, Category,Profile
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django import forms
@@ -129,3 +129,6 @@ def category_summary(request):
 		'categories': categories 
 	}
 	return render(request, 'store/category_summary.html', context)
+
+def update_user(request):
+	pass

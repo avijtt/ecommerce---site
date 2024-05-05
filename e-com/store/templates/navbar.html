@@ -26,9 +26,12 @@
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Update</a></li>
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Update profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'update_password' %}">Change Password</a></li>
+                         
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'user_info' %}"> User Info  </a></li>
                     </ul>
                 </li>
                 {% else %}
