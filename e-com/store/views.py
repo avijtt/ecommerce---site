@@ -4,14 +4,12 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django import forms
 from django.contrib.auth.models import User
-from.forms import SignUpForm,UpdateUserForm, ChangePasswordForm
+from.forms import SignUpForm,UpdateUserForm, ChangePasswordForm, UserInfoForm
 
 # Create your views here.
 def home(request):
 	products = Product.objects.all()
-	context ={
-		'products' : products
-	}
+	context ={ 'products' : products  }
 	return render(request,'store/home.html',context)
 
 
@@ -31,12 +29,11 @@ def register_user(request):
 			# log in user
 			user = authenticate(request, username=username,password=password)
 			login(request,user)
-			messages.success(request,'Account has been created')
-			return redirect('home')
+			messages.success(request,'Username Created - Fill below details ')
+			return redirect('update_info')
 		else:
 			messages.success(request,'There seems to be problem')
-			return redirect('register')
-		
+			return redirect('register')		
 	else:	
 		context = {'form':form}
 		return render(request, 'register.html',context )
@@ -54,7 +51,6 @@ def login_user(request):
 		else:
 			messages.error(request,"Username or Password is incorrect")
 			return redirect('login')
-
 	else:
  		return render(request, 'login.html', {} )
 
@@ -68,9 +64,7 @@ def update_user(request):
 	if request.user.is_authenticated:
 		current_user = User.objects.get(id = request.user.id)
 		user_form = UpdateUserForm(request.POST or None, instance = current_user )
-		context = {
-			'user_form':user_form
-		}
+		context = { 'user_form':user_form }
 		if user_form.is_valid():
 			user_form.save()
 			login(request, current_user)
@@ -104,6 +98,23 @@ def update_password(request):
 		messages.success(request, "You Must Be Logged In To View That Page...")
 		return redirect('home')
 
+def update_info(request):
+	if request.user.is_authenticated:
+		# get current profile
+		current_profile = Profile.objects.get(user__id = request.user.id)
+		form = UserInfoForm(request.POST or None, instance=current_profile)
+		if form.is_valid():
+			# save the new information 
+			form.save()
+			messages.success(request, 'Your profile info has been updated')
+			return redirect('home')
+		context = {'form' : form }
+		return render(request, 'update_info.html', context)
+	else:
+		messages.success(request, 'You must be logged in')
+		return redirect('login')
+
+
 def product(request,pk):
 	product = Product.objects.get(id = pk)
 	context ={'product':product}
@@ -130,5 +141,3 @@ def category_summary(request):
 	}
 	return render(request, 'store/category_summary.html', context)
 
-def update_user(request):
-	pass

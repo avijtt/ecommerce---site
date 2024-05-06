@@ -1,40 +1,43 @@
- {% extends 'base.html '%}
- {% block content %}
+{% extends 'base.html' %}
+{% block content %}
 
- <div class="bg-dark py-5 ">
-  <div class="container px-4 px-lg-5 my-5">
-      <div class="text-center text-white">
-          <h1 class="display-4 fw-bolder"> Register User profile</h1>
-          <p class="lead fw-normal text-white-50 mb-0"> 
-                First Time Here, sign up for free..
-          </p>
-      </div>
-  </div>
-</div>
+<!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Register</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Register for a User Account...</p>
+                </div>
+            </div>
+        </header>
 
+        <div class="container">
+        	<div class="row">
+        		
+        			<div class="col-md-6 offset-md-3">
 
-<div class="container ">
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header text-center text-dark">
-            <h3>Sign Up</h3>
-          </div>
-          <div class="card-body">
-            <form method="POST" action="{% url 'register' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <br/>
-                  <button type="submit" class="btn btn-secondary">Sign up</button>
-            </form>
-          </div>
+        				<br/><br/>
+<form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    <br/><br/>
+    <button type="submit" class="btn btn-secondary">
+      Register
+    </button>
+  
+</form>
+
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+        			</div>
+        		
+        	</div>
         </div>
-      </div>
-    </div>
-  </div>
- <br></br><br></br><br></br>
- <br></br><br></br><br></br>
- <br></br><br></br><br></br>
- <br></br><br></br><br></br>
- 
-  {% endblock %}
+
+{% endblock %}
