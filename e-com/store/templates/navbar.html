@@ -1,22 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <div class="container px-4 px-lg-5">
+    <div class="container px-4 px-lg-3">
         <a class="navbar-brand" href="{% url 'home' %}">Shop Me</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <ul class="navbar-nav me-auto">
+                <!-- Navigation links -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
                     <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
                         <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'category' 'Cell-Phone' %}">Cell Phone</a></li>
-                        <li><a class="dropdown-item" href="{% url 'category' 'Book' %}">Books</a></li>
+                        <li><a class="dropdown-item" href = "{% url 'category' 'Book' %}">Books</a></li>
                     </ul>
                 </li>
                 
@@ -26,12 +26,9 @@
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Update profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Update Profile</a></li>
                         <li><a class="dropdown-item" href="{% url 'update_password' %}">Change Password</a></li>
-                         
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'update_info' %}"> User Info  </a></li>
+                        <li><a class="dropdown-item" href="{% url 'update_info' %}">User Info</a></li>
                     </ul>
                 </li>
                 {% else %}
@@ -40,12 +37,14 @@
                 {% endif %}
             </ul>
             
-            <form class="d-flex ms-auto">
-                <a href="{% url 'cart_summery' %}" class="btn btn-outline-dark">
+            <!-- Right side content (Search and Cart) -->
+            <div class="d-flex align-items-center">
+                <a class="nav-link" href="{% url 'search' %}" style="margin-right: 10px;"><i class="bi bi-search"></i></a>
+                <a href="{% url 'cart_summery' %}" class="btn btn-outline-dark ms-2">
                     <i class="bi-cart-fill me-1"></i> Cart
                     <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-quantity">{{ cart|length }}</span>
                 </a>
-            </form>
+            </div>
         </div>
     </div>
 </nav>
