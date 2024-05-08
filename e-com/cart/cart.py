@@ -1,36 +1,36 @@
-from store.models import Product
+from store.models import Product,Profile
 class Cart:
     def __init__(self, request):
         self.session = request.session
-        # get currenrt session key if exist
-        cart = self.session.get("session_key")
-        # for new user , no session key ; create one
-        if "session_key" not in request.session:
+        cart = self.session.get("session_key")                                           # get currenrt session key if exist
+        self.request = request                                                           # get request
+        if "session_key" not in request.session:                                         # for new user , no session key ; create one
             cart = self.session["session_key"] = {}
-        # make sure cart is availiable to all pages
-        self.cart = cart
+        self.cart = cart                                                                # make sure cart is availiable to all pages
 
     def add(self, product, quantity):
         product_id = str(product.id)
         product_qty = str(quantity)
-        # check if product  already in cart
-        if product_id in self.cart:
+        if product_id in self.cart:                                                      # check if product  already in cart
             pass
         else:
-            # self.cart[product_id]={'price' : str(product.price)}
-             self.cart[product_id]= int(product_qty)
+             self.cart[product_id]= int(product_qty)                                    # self.cart[product_id]={'price' : str(product.price)}
         self.session.modified = True
+
+        if self.request.user.is_authenticated:                                          # for logged in user
+            current_user = Profile.objects.filter(user__id = self.request.user.id)      # get current user profile
+            carty = str(self.cart)                                                      # change dictionary to string
+            carty  = carty.replace("\'", "\"")
+            current_user.update(old_cart = str(carty))                                  # save carty to profile model
 
     def __len__(self):
         return len(self.cart)
 
     def get_prods(self):
-        # get the products ids
-        product_ids = self.cart.keys()
-        # use ids to look product in db
-        products = Product.objects.filter(id__in = product_ids)
-        # return products 
-        return products
+        product_ids = self.cart.keys()                                                  # get the products ids
+        products = Product.objects.filter(id__in = product_ids)                         # use ids to look product in db
+        return products                                                                 # return products 
+
     
     def get_quants(self):
         quantities = self.cart
@@ -39,11 +39,8 @@ class Cart:
     def update(self, product, quantity):
         product_id = str(product)
         product_qty = str(quantity)
-
-        # get cart
-        ourcart = self.cart
-        # update dict
-        ourcart[product_id] = product_qty
+        ourcart = self.cart                                                              # get cart
+        ourcart[product_id] = product_qty                                                # update dict
         self.session.modified = True
         thing = self.cart
         return thing
@@ -55,14 +52,11 @@ class Cart:
             self.session.modified=True
 
     def cart_totals(self):
-        # get product isd
-        product_ids = self.cart.keys()
+        product_ids = self.cart.keys()                                                  # get product ids
         products = Product.objects.filter(id__in = product_ids)
-        # get quantities
-        quantities = self.cart
+        quantities = self.cart                                                          # get quantities
         total = 0
-        # dictionary form as {'2' :4, '4' :3}
-        for key,value in quantities.items():
+        for key,value in quantities.items():                                            # dictionary form as {'2' :4, '4' :3}
             key = int(key)
             value = int(value)
             for product in products:
