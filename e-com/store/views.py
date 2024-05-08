@@ -5,6 +5,7 @@ from django.contrib import messages
 from django import forms
 from django.contrib.auth.models import User
 from.forms import SignUpForm,UpdateUserForm, ChangePasswordForm, UserInfoForm
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -12,11 +13,9 @@ def home(request):
 	context ={ 'products' : products  }
 	return render(request,'store/home.html',context)
 
-
 def about(request):
 	context = {}
 	return render(request, 'store/about.html',context )
-
 
 def register_user(request):
 	form = SignUpForm()
@@ -38,7 +37,6 @@ def register_user(request):
 		context = {'form':form}
 		return render(request, 'register.html',context )
 
-
 def login_user(request):
 	if request.method == "POST":
 		username = request.POST['username']
@@ -53,7 +51,6 @@ def login_user(request):
 			return redirect('login')
 	else:
  		return render(request, 'login.html', {} )
-
 
 def logout_user(request):
 	logout(request)
@@ -114,12 +111,10 @@ def update_info(request):
 		messages.success(request, 'You must be logged in')
 		return redirect('login')
 
-
 def product(request,pk):
 	product = Product.objects.get(id = pk)
 	context ={'product':product}
 	return render(request, 'store/product.html', context)
-
 
 def category_content(request,foo):
 	# replace space with hyphen
@@ -141,3 +136,17 @@ def category_summary(request):
 	}
 	return render(request, 'store/category_summary.html', context)
 
+def search(request):
+	# determine if search is filled
+	if request.method == "POST":
+		searched = request.POST["searched"]
+		# quer dartabase
+		searched = Product.objects.filter(Q(name__icontains =searched) | Q(description__icontains = searched))
+		# check for null
+		if not searched:
+			messages.success(request,'not found for search products')
+			return render(request, 'store/search.html', {})
+		else:
+			return render(request, 'store/search.html', {'searched':searched})
+	else:	
+		return render(request, 'store/search.html', {})
