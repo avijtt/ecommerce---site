@@ -5,6 +5,8 @@ from django.contrib import messages
 from django import forms
 from django.contrib.auth.models import User
 from.forms import SignUpForm,UpdateUserForm, ChangePasswordForm, UserInfoForm
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 from django.db.models import Q
 import json
 from cart.cart import Cart
@@ -111,15 +113,19 @@ def update_password(request):
 
 def update_info(request):
 	if request.user.is_authenticated:
-		# get current profile
+		# get current profile and current shipping user
 		current_profile = Profile.objects.get(user__id = request.user.id)
+		shipping_user =ShippingAddress.objects.get(user__id = request.user.id)
+		# get form to display in page
 		form = UserInfoForm(request.POST or None, instance=current_profile)
-		if form.is_valid():
+		shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+		if form.is_valid() or  shipping_form.is_valid():
 			# save the new information 
 			form.save()
-			messages.success(request, 'Your profile info has been updated')
+			shipping_form.save()
+			messages.success(request, 'Your info has been updated')
 			return redirect('home')
-		context = {'form' : form }
+		context = {'form' : form, 'shipping_form':shipping_form }
 		return render(request, 'update_info.html', context)
 	else:
 		messages.success(request, 'You must be logged in')

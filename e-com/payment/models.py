@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    full_name = models.CharField(max_length=100, )
-    email = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
-    city = models.CharField(max_length=30)
-    state = models.CharField(max_length=30, blank=True,null=True)
-    zipcode = models.CharField(max_length=10, blank=True,null=True)
-    country = models.CharField(max_length=64)
+    shipping_full_name = models.CharField(max_length=100, )
+    shipping_email = models.CharField(max_length=20)
+    shipping_address = models.CharField(max_length=50)
+    shipping_city = models.CharField(max_length=30)
+    shipping_state = models.CharField(max_length=30, blank=True,null=True)
+    shipping_zipcode = models.CharField(max_length=10, blank=True,null=True)
+    shipping_country = models.CharField(max_length=64)
     
     # dont pluralize address
     class Meta:
