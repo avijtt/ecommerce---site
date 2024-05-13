@@ -6,8 +6,7 @@ from django.contrib import messages
 
 # Create your views here.
 def cart_summery(request):
-    # get the cart
-    cart = Cart(request)
+    cart = Cart(request)     # get the cart
     cart_products = cart.get_prods()
     quantities = cart.get_quants()
     totals = cart.cart_totals() 
@@ -20,20 +19,14 @@ def cart_summery(request):
 
 
 def cart_add(request):
-    # get the cart
-    cart = Cart(request)
-    # test for post
-    if request.POST.get('action') == 'post':
-        # get product-id and quantity from jquery
-        product_id = int(request.POST.get('product_id'))    
-        product_qty =  int(request.POST.get('product_qty'))    
-        # lookup product
+    cart = Cart(request)     # get the cart
+    if request.POST.get('action') == 'post':     # get the cart
+        product_id = int(request.POST.get('product_id'))            # get product-id and quantity from jquery
+        product_qty =  int(request.POST.get('product_qty'))     # lookup product
         product = get_object_or_404(Product, id = product_id)
-        # save the session
-        cart.add(product = product, quantity = product_qty)
         
-        # get cart Quantity
-        cart_quantity = cart.__len__()
+        cart.add(product = product, quantity = product_qty ) # save the session        
+        cart_quantity = cart.__len__()         # get cart Quantity
 
         # reurn response
         # response = JsonResponse({'product name': product.name})
@@ -49,7 +42,6 @@ def cart_delete(request):
         cart.delete(product = product_id)
         response = JsonResponse({'product' : product_id})
         messages.success(request,'Product Removed from Cart')
-
         return response
 
     
@@ -57,7 +49,7 @@ def cart_delete(request):
 def cart_update(request):
    cart = Cart(request)
    if request.POST.get('action') == 'post':
-    #    get fro ajax
+    #    get from ajax
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
 
