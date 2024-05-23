@@ -64,10 +64,8 @@ def process_order(request):
 		quantities = cart.get_quants
 		totals = cart.cart_totals()
 
-		# get billing info from last page
-		payment_form  = PaymentForm(request.POST or None)
-		# get shipping session
-		my_shipping = request.session.get("my_shipping")
+		payment_form  = PaymentForm(request.POST or None)  		# get billing info from last page
+		my_shipping = request.session.get("my_shipping") 		# get shipping session
 
 		# gather order info
 		full_name = my_shipping["shipping_full_name"]
@@ -78,21 +76,16 @@ def process_order(request):
 		amount = totals
 
 		# order create
-		if request.user.is_authenticated:
-			# logged in
+		if request.user.is_authenticated:  			# logged in
 			user = request.user
-			# create order
+			# create order and get order
 			create_order = Order(user = user, full_name = full_name, email = email, shipping_address = shipping_address, amount = amount)
 			create_order.save()
-
-			# get order ID
 			order_id = create_order.pk
 
-			# get product info
+			# get product info with id and price
 			for product in cart_products():
-				# get product ID
 				product_id = product.pk
-				# get product price
 				if product.is_sale:
 					price = product.sale_price
 				else:
@@ -115,18 +108,13 @@ def process_order(request):
 			messages.success(request, "Order Placed")
 			return redirect("home")
 		
-		else:
-			# not logged in
-			# create order
+		else: 			# not logged in
+			# create order 
 			create_order = Order(full_name = full_name, email = email, shipping_address = shipping_address, amount = amount)
 			create_order.save()
-			# get order ID
 			order_id = create_order.pk
-			# get product info
 			for product in cart_products():
-				# get product ID
 				product_id = product.pk
-				# get product price
 				if product.is_sale:
 					price = product.sale_price
 				else:
@@ -146,9 +134,6 @@ def process_order(request):
 					del request.session[key]
 			messages.success(request, "Order Placed")
 			return redirect("home")
-
-
-
 
 	else:
 		messages.success(request, "Access Denied")
