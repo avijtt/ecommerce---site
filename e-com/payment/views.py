@@ -138,3 +138,12 @@ def process_order(request):
 	else:
 		messages.success(request, "Access Denied")
 		return redirect("home")	
+	
+def shipped_dash(request):
+	pass
+
+def not_shipped_dash(request):
+	pass
+
+def orders(request):
+	pass
