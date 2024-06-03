@@ -155,5 +155,14 @@ def not_shipped_dash(request):
 		messages.success(request, "Access Denied")
 		return redirect("home")
 
-def orders(request):
-	pass
+def orders(request,pk):
+	if request.user.is_authenticated and request.user.is_superuser:
+		# get order 
+		order = Order.objects.get(id = pk)
+		# get order items
+		order_items = OrderItem.objects.filter(id = pk)
+		return render(request, "payment/orders.html", {"order":order, "order_items":order_items})
+		 
+	else:
+		messages.success(request, "Access Denied")
+		return redirect("home")
