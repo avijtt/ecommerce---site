@@ -3,6 +3,7 @@ from cart.cart import Cart
 from payment.models import Order, OrderItem, ShippingAddress
 from payment.forms import PaymentForm, ShippingForm
 from django.contrib import messages
+import datetime
 
 # Create your views here.
 def payment_success(request):
@@ -142,6 +143,18 @@ def process_order(request):
 def shipped_dash(request):
 	if request.user.is_authenticated and request.user.is_superuser:
 		orders = Order.objects.filter(shipped = True)
+		if request.POST:
+			status = request.POST['shipping_status']
+			num = request.POST['num']
+			# grab the order
+			order = Order.objects.filter(id=num)
+			# grab Date and time
+			now = datetime.datetime.now()
+			# update order
+			order.update(shipped=False)
+			# redirect
+			messages.success(request, "Shipping Status Updated")
+			return redirect('home')
 		return render(request, "payment/shipped_dash.html", {"orders":orders})
 	else:
 		messages.success(request, "Access Denied")
@@ -150,6 +163,18 @@ def shipped_dash(request):
 def not_shipped_dash(request):
 	if request.user.is_authenticated and request.user.is_superuser:
 		orders = Order.objects.filter(shipped = False)
+		if request.POST:
+			status = request.POST['shipping_status']
+			num = request.POST['num']
+			# Get the order
+			order = Order.objects.filter(id=num)
+			# grab Date and time
+			now = datetime.datetime.now()
+			# update order
+			order.update(shipped=True, date_shipped=now)
+			# redirect
+			messages.success(request, "Shipping Status Updated")
+			return redirect('home')
 		return render(request, "payment/not_shipped_dash.html", {"orders":orders})
 	else:
 		messages.success(request, "Access Denied")
@@ -161,6 +186,18 @@ def orders(request,pk):
 		order = Order.objects.get(id = pk)
 		# get order items
 		order_items = OrderItem.objects.filter(id = pk)
+		if request.POST:
+			status = request.POST['shipping_status']
+			# check true or false 
+			if status == 'true':
+				order = Order.objects.filter(id = pk)
+				now  = datetime.datetime.now()
+				order.update(shipped = True, date_shipped = now)
+			else:
+				order = Order.objects.filter(id = pk)
+				order.update(shipped = False)
+			messages.success(request, "Shipping Status Success ")
+			return redirect("home")
 		return render(request, "payment/orders.html", {"order":order, "order_items":order_items})
 		 
 	else:
