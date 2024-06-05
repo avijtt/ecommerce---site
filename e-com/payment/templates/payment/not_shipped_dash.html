@@ -26,7 +26,7 @@
                             <td><a href="{% url 'orders' item.id %}">{{ item.id }}</a></td>
                             <td>${{ item.amount }}</td>
                             <td>{{ item.email }}</td>
-                            <td>{{ item.date_order }}</td>
+                            <td>{{ item.date_ordered }}</td>
                             <td>
                                 <form method="POST">
                                     {% csrf_token %}
