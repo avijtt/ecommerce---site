@@ -21,25 +21,36 @@ def about(request):
 	context = {}
 	return render(request, 'store/about.html',context )
 
+ 
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import SignUpForm
+
 def register_user(request):
-	form = SignUpForm()
-	if request.method == "POST":
-		form = SignUpForm(request.POST)
-		if form.is_valid():
-			form.save()
-			username = form.cleaned_data['username']
-			password = form.cleaned_data['password1']
-			# log in user
-			user = authenticate(request, username=username,password=password)
-			login(request,user)
-			messages.success(request,'Username Created - Fill below details ')
-			return redirect('update_info')
-		else:
-			messages.success(request,'There seems to be problem')
-			return redirect('register')		
-	else:	
-		context = {'form':form}
-		return render(request, 'register.html',context )
+    form = SignUpForm()
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            # log in user
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Username Created - Please Fill Out Your User Info Below...")
+                return redirect('update_info')
+            else:
+                messages.error(request, "Authentication failed. Please try again.")
+                return redirect('register')
+        else:
+            # Debugging: Print form errors to console or log them
+            print(form.errors)
+            messages.error(request, "Whoops! There was a problem registering, please try again...")
+            return redirect('register')
+    else:
+        return render(request, 'register.html', {'form': form})
 
 def login_user(request):
 	if request.method == "POST":
