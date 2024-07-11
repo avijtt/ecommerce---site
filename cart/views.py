@@ -1,8 +1,10 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import redirect, render,get_object_or_404
 from .cart import Cart
 from store.models import Product
 from django.http import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 # Create your views here.
 def cart_summery(request):
@@ -18,21 +20,22 @@ def cart_summery(request):
     return render(request, 'cart/cart_summery.html', context)
 
 
+@login_required(login_url='login')  # Ensure the user is logged in
 def cart_add(request):
-    cart = Cart(request)     # get the cart
-    if request.POST.get('action') == 'post':     # get the cart
-        product_id = int(request.POST.get('product_id'))            # get product-id and quantity from jquery
-        product_qty =  int(request.POST.get('product_qty'))     # lookup product
-        product = get_object_or_404(Product, id = product_id)
+    cart = Cart(request)  # Get the cart
+    if request.POST.get('action') == 'post':
+        product_id = int(request.POST.get('product_id'))  # Get product-id and quantity from jquery
+        product_qty = int(request.POST.get('product_qty'))  # Lookup product
+        product = get_object_or_404(Product, id=product_id)
         
-        cart.add(product = product, quantity = product_qty ) # save the session        
-        cart_quantity = cart.__len__()         # get cart Quantity
+        cart.add(product=product, quantity=product_qty)  # Save the session
+        cart_quantity = cart.__len__()  # Get cart Quantity
 
-        # reurn response
-        # response = JsonResponse({'product name': product.name})
-        response = JsonResponse({' Qty': cart_quantity})
-        messages.success(request,'Product Added to Cart')
+        response = JsonResponse({'Qty': cart_quantity})
+        messages.success(request, 'Product Added to Cart')
         return response
+    else:
+        return redirect(reverse('login'))  # Redirect to login page if not authenticated
 
 def cart_delete(request):
     cart = Cart(request)
