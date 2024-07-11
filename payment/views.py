@@ -209,3 +209,13 @@ def orders(request,pk):
 	else:
 		messages.success(request, "Access Denied")
 		return redirect("home")
+	
+def my_order(request):
+    if request.user.is_authenticated:
+        # Retrieve orders for the authenticated user
+        orders = Order.objects.filter(user=request.user)
+        return render(request, 'payment/my_order.html', {'orders': orders})
+    else:
+        messages.success(request, "You need to be logged in to view your orders.")
+        return redirect('login')  # Redirect to the login page or any other appropriate page
+
